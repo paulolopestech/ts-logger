@@ -9,9 +9,10 @@ export type Log = {
 }
 
 export type LogsFilter = {
-    applicationID: UUID
-    type: string
-    priority: number
-    initialTimeStamp: number
-    finalTimeStamp: number
+    connectionID: UUID | undefined
+    applicationID: UUID | undefined
+    type: string | undefined
+    priority: number | undefined
+    initialTimeStamp: number | undefined
+    finalTimeStamp: number | undefined
 }
