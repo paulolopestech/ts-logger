@@ -11,7 +11,7 @@ const log: Log = {
     message: 'connection',
     type: 'info',
     priority: 2,
-    timestamp: 1702176060
+    timestamp: 1702176060000
 }
 
 describe('Testing insert log in database', () => {
