@@ -1,7 +1,7 @@
 import { LoggerRepository } from "../repositories";
 import { Log } from "../types";
 
-export class Logger {
+export class LoggerService {
     loggerRepository: LoggerRepository;
     constructor(loggerRepository: LoggerRepository){
         this.loggerRepository = loggerRepository;

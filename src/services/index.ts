@@ -1,5 +1,5 @@
-import { Logger } from "./logger";
+import { LoggerService } from "./logger";
 
 export {
-    Logger,
+    LoggerService,
 }
