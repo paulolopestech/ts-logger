@@ -1,7 +1,7 @@
 import { WebSocketViewServer } from "../infra/config/http";
 import { LoggerService } from "../services";
 import { Log, WsLogInput } from "../types";
-import { handleLogPriority } from "../utils/handleConnectionPriority";
+import { handleLogPriority } from "../utils/handleLogPriority";
 
 export class HandleLogger {
     logger: LoggerService
