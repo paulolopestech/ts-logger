@@ -1,6 +1,6 @@
 import { WebSocketViewServer } from "../infra/config/http";
 import { LoggerService } from "../services";
-import { Log, WsLogInput } from "../types";
+import { Log, LogsFilter, WsLogInput } from "../types";
 import { handleLogPriority } from "../utils/handleLogPriority";
 
 export class HandleLogger {
@@ -23,5 +23,15 @@ export class HandleLogger {
         const message: string = JSON.stringify(log);
         WebSocketViewServer.sendMessageToAllClients(message);
         return [response, error];
+    }
+
+    async handleGetLogs(filter: string, page?: string) {
+        const parsedFilter: LogsFilter = filter ? JSON.parse(filter) : {};
+        const parsedPage = page ? parseInt(page) : 0;
+        const [response, error] = await this.logger.getLogs(parsedFilter, parsedPage);
+        if(error) {
+            return error;
+        }
+        return response;
     }
 }
