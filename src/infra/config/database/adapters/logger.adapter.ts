@@ -1,11 +1,21 @@
 import { LoggerRepository } from "../../../../repositories";
 import { Log, LogsFilter } from "../../../../types";
-
+import { LogsModel } from "../database"
 export class LoggerAdapter implements LoggerRepository {
-    insertLog(log: Log) {
-        throw new Error("Method not implemented.");
+    async insertLog(log: Log) {
+        try {
+            const createdLog = await LogsModel.create(log);
+            return [createdLog, null]
+        } catch (error) {
+            return [null, error]
+        }
     }
-    getLogs(filter: LogsFilter | null): Log[] {
-        throw new Error("Method not implemented.");
+    async getLogs(filter: LogsFilter | null) {
+        try {
+            const logs = await LogsModel.find({ filter });
+            return [logs, null];
+        } catch (error) {
+            return [null, error];
+        }
     }
 }
