@@ -10,9 +10,17 @@ export class LoggerAdapter implements LoggerRepository {
             return [null, error]
         }
     }
-    async getLogs(filter: LogsFilter | null) {
+    async getLogs(filter: LogsFilter, page: number = 0): Promise<[Log[] | null, any]> {
         try {
-            const logs = await LogsModel.find({ filter });
+            const pageSize = 50;
+            const offset = page * pageSize;    
+            const pipeline = [
+                { $match: filter },
+                { $project: { _id: 0, __v: 0 } },
+                { $skip: offset },
+                { $limit: pageSize }
+            ];
+            const logs = await LogsModel.aggregate(pipeline);
             return [logs, null];
         } catch (error) {
             return [null, error];
