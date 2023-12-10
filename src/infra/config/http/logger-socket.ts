@@ -27,13 +27,9 @@ class WebSocketLoggerServer {
 
   private handleConnection(ws: WebSocket, request: http.IncomingMessage) {
     const connectionID = generateUUID();
-
     const clientIdFromUrl = request.url ? request.url.substring(1) : undefined;
-
     const applicationID = clientIdFromUrl || generateUUID();
-
     const client: Client = { connectionID, applicationID, ws };
-
     this.clients.set(connectionID, client);
 
     console.log(`Cliente ${applicationID} conectado com ID de conexão ${connectionID}`);
@@ -79,7 +75,7 @@ class WebSocketLoggerServer {
         type: 'disconnection',
       }
       handleLogger.handleLoggerMessage(input);
-      this.clients.delete(connectionID);      
+      this.clients.delete(connectionID);
     });
   }
 

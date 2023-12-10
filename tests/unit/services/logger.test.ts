@@ -21,9 +21,33 @@ describe('Testing insert log in database', () => {
             getLogs: jest.fn().mockReturnValue([null, null])
         }))
 
-        const logger = new LoggerService(new MockRepository);
-        const response = await logger.storeLogInDataBase(log);
+        const loggerService = new LoggerService(new MockRepository);
+        const response = await loggerService.storeLogInDataBase(log);
         expect(response[0]).toBe(true);
         expect(!response[1]).toBe(true);
+    });
+
+    test('Should return error if cannot save log', async () => {
+        MockRepository.mockImplementationOnce(()=> ({
+            insertLog: jest.fn().mockReturnValue([null, null]),
+            getLogs: jest.fn().mockReturnValue([null, null])
+        }))
+
+        const loggerService = new LoggerService(new MockRepository);
+        const response = await loggerService.storeLogInDataBase(log);
+        expect(!response[0]).toBe(true);
+        expect(!response[1]).toBe(true);
+    });
+
+    test('Should return error if returns an exception', async () => {
+        MockRepository.mockImplementationOnce(()=> ({
+            insertLog: jest.fn().mockReturnValue([null, 'error']),
+            getLogs: jest.fn().mockReturnValue([null, null])
+        }))
+
+        const loggerService = new LoggerService(new MockRepository);
+        const response = await loggerService.storeLogInDataBase(log);
+        expect(!response[0]).toBe(true);
+        expect(response[1]).toBe('error');
     });
 });
