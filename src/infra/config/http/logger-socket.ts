@@ -2,6 +2,8 @@ import * as WebSocket from 'ws';
 import * as http from 'http';
 import { generateUUID } from '../../../utils/generateUUID';
 import { Logger } from '../../../services/logger';
+import { HandleLogger } from '../../../controllers/handle.logger';
+import { WsLogInput } from '../../../types';
 
 interface Client {
   connectionID: string;
@@ -20,7 +22,6 @@ class WebSocketLoggerServer {
     this.wss = new WebSocket.Server({ server: this.server });
     this.clients = new Map();
     WebSocketLoggerServer.logger = logger;
-
     this.wss.on('connection', this.handleConnection.bind(this));
   }
 
@@ -37,7 +38,14 @@ class WebSocketLoggerServer {
 
     console.log(`Cliente ${applicationID} conectado com ID de conexão ${connectionID}`);
 
+    const handleInput: WsLogInput = {
+      connectionID: connectionID,
+      applicationID: applicationID,
+      message: 'connection',
+    }
 
+    const handleLogger = new HandleLogger();
+    handleLogger.handleLoggerConnection(handleInput, WebSocketLoggerServer.logger);
 
     ws.on('message', (message) => {
       console.log(`Cliente ${applicationID} enviou mensagem: ${message}`);
