@@ -1,10 +1,10 @@
 import * as WebSocket from 'ws';
 import * as http from 'http';
-import { v4 as uuidv4 } from 'uuid';
+import { generateUUID } from '../../../utils/generateUUID';
 
 interface Client {
-  serverId: string;
-  clientId?: string;
+  connectionID: string;
+  applicationID?: string;
   ws: WebSocket;
 }
 
@@ -21,52 +21,48 @@ class WebSocketLoggerServer {
     this.wss.on('connection', this.handleConnection.bind(this));
   }
 
-  private generateServerId(): string {
-    return uuidv4();
-  }
-
   private handleConnection(ws: WebSocket, request: http.IncomingMessage) {
-    const serverId = this.generateServerId();
+    const connectionID = generateUUID();
 
     const clientIdFromUrl = request.url ? request.url.substring(1) : undefined;
 
-    const clientId = clientIdFromUrl || uuidv4();
+    const applicationID = clientIdFromUrl || generateUUID();
 
-    const client: Client = { serverId, clientId, ws };
+    const client: Client = { connectionID, applicationID, ws };
 
-    this.clients.set(serverId, client);
+    this.clients.set(connectionID, client);
 
-    console.log(`Cliente ${clientId} conectado com ID do servidor ${serverId}`);
+    console.log(`Cliente ${applicationID} conectado com ID de conexão ${connectionID}`);
 
     ws.on('message', (message) => {
-      console.log(`Cliente ${clientId} enviou mensagem: ${message}`);
+      console.log(`Cliente ${applicationID} enviou mensagem: ${message}`);
 
       ws.send(`Você disse: ${message}`);
     });
 
     ws.on('close', () => {
-      console.log(`Cliente ${clientId} com ID do servidor ${serverId} desconectado`);
-      this.clients.delete(serverId);
+      console.log(`Cliente ${applicationID} com ID do servidor ${connectionID} desconectado`);
+      this.clients.delete(connectionID);
     });
   }
 
-  public sendMessageToAllClientInstances(clientId: string, message: string) {
-    const client = this.clients.get(clientId);
+  public sendMessageToAllClientInstances(applicationID: string, message: string) {
+    const client = this.clients.get(applicationID);
 
     if (client && client.ws.readyState === WebSocket.OPEN) {
       client.ws.send(message);
     } else {
-      console.log(`Cliente ${clientId} não encontrados ou não estão prontos para receber mensagens.`);
+      console.log(`Cliente ${applicationID} não encontrados ou não estão prontos para receber mensagens.`);
     }
   }
 
-  public sendMessageToClient(serverId: string, message: string) {
-    const client = this.clients.get(serverId);
+  public sendMessageToClient(connectionID: string, message: string) {
+    const client = this.clients.get(connectionID);
 
     if (client && client.ws.readyState === WebSocket.OPEN) {
       client.ws.send(message);
     } else {
-      console.log(`Cliente ${serverId} não encontrado ou não está pronto para receber mensagens.`);
+      console.log(`Cliente ${connectionID} não encontrado ou não está pronto para receber mensagens.`);
     }
   }
 

@@ -8,21 +8,21 @@ mongoose.connect('mongodb://root:example@localhost:27017/admin')
   })
 
 interface Logs extends Document {
-    serverID: UUID;
-    clientID: string;
+    connectionID: UUID;
+    applicationID: string;
     message: string;
     type: string;
-    priority: string;
+    priority: number;
     timestamp: number;
 }
 
-const limitSchema = new Schema({
-    serverID: { type: String, required: true },
-    clientID: { type: String, required: true, index: true },
+const logsSchema = new Schema({
+    connectionID: { type: String, required: true },
+    applicationID: { type: String, required: true, index: true },
     message: { type: String, required: true },
     type: { type: String, required: true },
-    priority: { type: String, required: true },
+    priority: { type: Number, required: true },
     timestamp: { type: Number, required: true },
 });
 
-export const LimitModel = model<Logs>('Logs', limitSchema);
+export const LogsModel = model<Logs>('Logs', logsSchema);

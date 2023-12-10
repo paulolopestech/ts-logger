@@ -1,17 +1,17 @@
 import { UUID } from "crypto";
 export type Log = {
-    serverID: UUID
-    clientID: string
+    connectionID: UUID
+    applicationID: string
     message: string
     type: string
-    priority: string
+    priority: number
     timestamp: number
 }
 
 export type LogsFilter = {
-    clientID: any
-    type: any
-    priority: any
-    initialTimeStamp: any
-    finalTimeStamp: any
+    applicationID: UUID
+    type: string
+    priority: number
+    initialTimeStamp: number
+    finalTimeStamp: number
 }
