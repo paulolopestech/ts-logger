@@ -1,21 +1,25 @@
 import { WebSocketViewServer } from "../infra/config/http";
-import { Logger } from "../services/logger";
+import { LoggerService } from "../services";
 import { Log, WsLogInput } from "../types";
+import { handleLogPriority } from "../utils/handleConnectionPriority";
 
 export class HandleLogger {
-   async  handleLoggerConnection(input: WsLogInput, logger: Logger) {
+    logger: LoggerService
+    constructor(logger: LoggerService) {
+        this.logger = logger;
+    }
+    async handleLoggerMessage(input: WsLogInput) {
         const timestamp = new Date().getTime();
-        const connectionPriority = 2;
-        const connectionType = 'start';
+        const logPriority = handleLogPriority(input.type);
         const log: Log = {
             connectionID: input.connectionID,
             applicationID: input.applicationID,
             message: input.message,
-            priority: connectionPriority,
-            type: connectionType,
+            priority: logPriority,
+            type: input.type,
             timestamp: timestamp,
         }
-        const [response, error] = await logger.storeLogInDataBase(log);
+        const [response, error] = await this.logger.storeLogInDataBase(log);
         const message: string = JSON.stringify(log);
         WebSocketViewServer.sendMessageToAllClients(message);
         return [response, error];
