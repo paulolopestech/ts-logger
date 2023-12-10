@@ -1,7 +1,7 @@
 // import jest from 'jest';
 import { MockLogger } from "./mocks/mock";
-import { Logger } from "../../src/services/logger";
-import { Log } from "../../src/types";
+import { LoggerService } from "../../../src/services/logger";
+import { Log } from "../../../src/types";
 
 jest.mock('./mocks/mock.ts');
 const MockRepository = MockLogger as jest.MockedClass<typeof MockLogger>;
@@ -21,7 +21,7 @@ describe('Testing insert log in database', () => {
             getLogs: jest.fn().mockReturnValue([null, null])
         }))
 
-        const logger = new Logger(new MockRepository);
+        const logger = new LoggerService(new MockRepository);
         const response = await logger.storeLogInDataBase(log);
         expect(response[0]).toBe(true);
         expect(!response[1]).toBe(true);
