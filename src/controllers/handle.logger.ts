@@ -1,3 +1,4 @@
+import { WebSocketViewServer } from "../infra/config/http";
 import { Logger } from "../services/logger";
 import { Log, WsLogInput } from "../types";
 
@@ -15,6 +16,8 @@ export class HandleLogger {
             timestamp: timestamp,
         }
         const [response, error] = await logger.storeLogInDataBase(log);
+        const message: string = JSON.stringify(log);
+        WebSocketViewServer.sendMessageToAllClients(message);
         return [response, error];
     }
 }

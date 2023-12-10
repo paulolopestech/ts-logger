@@ -10,12 +10,12 @@ interface Client {
 class WebSocketViewServer {
   private server: http.Server;
   private wss: WebSocket.Server;
-  private clients: Map<string, Client>;
+  static clients: Map<string, Client>;
 
   constructor() {
     this.server = http.createServer();
     this.wss = new WebSocket.Server({ server: this.server });
-    this.clients = new Map();
+    WebSocketViewServer.clients = new Map();
 
     this.wss.on('connection', this.handleConnection.bind(this));
   }
@@ -24,7 +24,7 @@ class WebSocketViewServer {
     const clientId = uuidv4();
     const client: Client = { id: clientId, ws };
 
-    this.clients.set(clientId, client);
+    WebSocketViewServer.clients.set(clientId, client);
 
     console.log(`Cliente ${clientId} conectado`);
 
@@ -35,18 +35,18 @@ class WebSocketViewServer {
 
     ws.on('close', () => {
       console.log(`Cliente ${clientId} desconectado`);
-      this.clients.delete(clientId);
+      WebSocketViewServer.clients.delete(clientId);
     });
   }
 
-  public sendMessageToClient(clientId: string, message: string) {
-    const client = this.clients.get(clientId);
-
-    if (client && client.ws.readyState === WebSocket.OPEN) {
-      client.ws.send(message);
-    } else {
-      console.log(`Cliente ${clientId} não encontrado ou não está pronto para receber mensagens.`);
-    }
+  static sendMessageToAllClients(message: string) {
+    WebSocketViewServer.clients.forEach((client) => {
+      if (client.ws.readyState === WebSocket.OPEN) {
+        client.ws.send(message);
+      } else {
+        console.log(`Cliente ${client.id} não está pronto para receber mensagens.`);
+      }
+    });
   }
 
   public start() {
