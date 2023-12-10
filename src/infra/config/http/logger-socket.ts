@@ -1,7 +1,7 @@
 import * as WebSocket from 'ws';
 import * as http from 'http';
 import { generateUUID } from '../../../utils/generateUUID';
-import { Logger } from '../../../services/logger';
+import { LoggerService } from '../../../services/logger';
 import { HandleLogger } from '../../../controllers/handle.logger';
 import { WsLogInput } from '../../../types';
 
@@ -15,13 +15,13 @@ class WebSocketLoggerServer {
   private server: http.Server;
   private wss: WebSocket.Server;
   private clients: Map<string, Client>;
-  static logger: Logger;
+  static loggerService: LoggerService;
 
-  constructor(logger: Logger) {
+  constructor(loggerService: LoggerService) {
     this.server = http.createServer();
     this.wss = new WebSocket.Server({ server: this.server });
     this.clients = new Map();
-    WebSocketLoggerServer.logger = logger;
+    WebSocketLoggerServer.loggerService = loggerService;
     this.wss.on('connection', this.handleConnection.bind(this));
   }
 
@@ -41,48 +41,52 @@ class WebSocketLoggerServer {
     const handleInput: WsLogInput = {
       connectionID: connectionID,
       applicationID: applicationID,
-      message: 'connection',
+      message: 'Application Connected',
+      type: 'connection',
     }
 
-    const handleLogger = new HandleLogger();
-    handleLogger.handleLoggerConnection(handleInput, WebSocketLoggerServer.logger);
+    const handleLogger = new HandleLogger(WebSocketLoggerServer.loggerService);
+    handleLogger.handleLoggerMessage(handleInput);
 
-    ws.on('message', (message) => {
-      console.log(`Cliente ${applicationID} enviou mensagem: ${message}`);
-
-      ws.send(`Você disse: ${message}`);
+    ws.on('message', (data) => {
+      try {
+        console.log(`Message from ${applicationID} - ${connectionID}: ${data}`);
+        const formatedData = JSON.parse(data.toString());
+        const input: WsLogInput = {
+          connectionID: connectionID,
+          applicationID: applicationID,
+          message: formatedData.message,
+          type: formatedData.type,
+        }
+        handleLogger.handleLoggerMessage(input);
+      } catch (e) {
+        const input: WsLogInput = {
+          connectionID: connectionID,
+          applicationID: applicationID,
+          message: `Received invalid data from client! - ${e}`,
+          type: 'exception',
+        }
+        handleLogger.handleLoggerMessage(input);
+      }
     });
 
     ws.on('close', () => {
       console.log(`Cliente ${applicationID} com ID do servidor ${connectionID} desconectado`);
-      this.clients.delete(connectionID);
+      const input: WsLogInput = {
+        connectionID: connectionID,
+        applicationID: applicationID,
+        message: 'Client connection is down!',
+        type: 'disconnection',
+      }
+      handleLogger.handleLoggerMessage(input);
+      this.clients.delete(connectionID);      
     });
-  }
-
-  public sendMessageToAllClientInstances(applicationID: string, message: string) {
-    const client = this.clients.get(applicationID);
-
-    if (client && client.ws.readyState === WebSocket.OPEN) {
-      client.ws.send(message);
-    } else {
-      console.log(`Cliente ${applicationID} não encontrados ou não estão prontos para receber mensagens.`);
-    }
-  }
-
-  public sendMessageToClient(connectionID: string, message: string) {
-    const client = this.clients.get(connectionID);
-
-    if (client && client.ws.readyState === WebSocket.OPEN) {
-      client.ws.send(message);
-    } else {
-      console.log(`Cliente ${connectionID} não encontrado ou não está pronto para receber mensagens.`);
-    }
   }
 
   public start() {
     const PORT = process.env.LOGGER_PORT || 3001;
     this.server.listen(PORT, () => {
-      console.log(`Servidor WebSocket Logger está ouvindo na porta ${PORT}`);
+      console.log(`WebSocket Logger Server Listening at port ${PORT}`);
     });
   }
 }
