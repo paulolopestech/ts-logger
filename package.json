@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "npm run build && node build/server.js",
+        "start": "npm run build && node build/src/server.js",
         "start:dev": "npx nodemon",
         "test": "jest",
         "compile": "npx tsc",
