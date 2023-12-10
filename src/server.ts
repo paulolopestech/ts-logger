@@ -1,3 +1,8 @@
-import { startHTTP } from "./infra";
-const PORT = 3000;
-startHTTP(PORT);
+import { startHTTP, startWSLogger } from "./infra";
+import { startWSView } from "./infra/http.server";
+
+const REST_PORT = 3000;
+
+startHTTP(REST_PORT);
+startWSLogger();
+startWSView();

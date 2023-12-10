@@ -1,6 +1,7 @@
 import * as WebSocket from 'ws';
 import * as http from 'http';
 import { generateUUID } from '../../../utils/generateUUID';
+import { Logger } from '../../../services/logger';
 
 interface Client {
   connectionID: string;
@@ -12,11 +13,13 @@ class WebSocketLoggerServer {
   private server: http.Server;
   private wss: WebSocket.Server;
   private clients: Map<string, Client>;
+  static logger: Logger;
 
-  constructor(port: number) {
+  constructor(logger: Logger) {
     this.server = http.createServer();
     this.wss = new WebSocket.Server({ server: this.server });
     this.clients = new Map();
+    WebSocketLoggerServer.logger = logger;
 
     this.wss.on('connection', this.handleConnection.bind(this));
   }
@@ -33,6 +36,8 @@ class WebSocketLoggerServer {
     this.clients.set(connectionID, client);
 
     console.log(`Cliente ${applicationID} conectado com ID de conexão ${connectionID}`);
+
+
 
     ws.on('message', (message) => {
       console.log(`Cliente ${applicationID} enviou mensagem: ${message}`);
@@ -67,9 +72,9 @@ class WebSocketLoggerServer {
   }
 
   public start() {
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.LOGGER_PORT || 3001;
     this.server.listen(PORT, () => {
-      console.log(`Servidor WebSocket está ouvindo na porta ${PORT}`);
+      console.log(`Servidor WebSocket Logger está ouvindo na porta ${PORT}`);
     });
   }
 }

@@ -12,7 +12,7 @@ class WebSocketViewServer {
   private wss: WebSocket.Server;
   private clients: Map<string, Client>;
 
-  constructor(port: number) {
+  constructor() {
     this.server = http.createServer();
     this.wss = new WebSocket.Server({ server: this.server });
     this.clients = new Map();
@@ -50,9 +50,9 @@ class WebSocketViewServer {
   }
 
   public start() {
-    const PORT = process.env.PORT || 3000;
+    const PORT = process.env.VIEW_PORT || 3002;
     this.server.listen(PORT, () => {
-      console.log(`Servidor WebSocket está ouvindo na porta ${PORT}`);
+      console.log(`Servidor WebSocket View está ouvindo na porta ${PORT}`);
     });
   }
 }

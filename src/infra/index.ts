@@ -1,5 +1,6 @@
-import startHTTP from "./http.server";
+import { startHTTP, startWSLogger } from "./http.server";
 
 export {
     startHTTP,
+    startWSLogger,
 }
