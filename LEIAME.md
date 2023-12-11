@@ -2,13 +2,13 @@
 Uma aplicação de registro eficiente escrita em Typescript que gerencia logs de várias aplicações conectadas. O Logger utiliza conexões WebSocket para receber logs, armazená-los em um banco de dados MongoDB e transmitir as informações para dashboards.
 
 ## Funcionalidades
-- <b>Integração WebSocket:</b> Dois servidores WebSocket, um na porta 3001 para receber logs e outro na porta 3002 para enviar dados para dashboards.
+- <b>Integração WebSocket:</b> Dois servidores WebSocket, um na porta 3002 para receber logs e outro na porta 3003 para enviar dados para dashboards.
 
 - <b>Banco de Dados MongoDB:</b> Armazena documentos de log de maneira eficiente para análise e recuperação posterior.
 
-- <b>Servidor HTTP Express:</b> Executa na porta 3000, tratando rotas para receber e retornar dados para dashboards.
+- <b>Servidor HTTP Express:</b> Executa na porta 3001, tratando rotas para receber e retornar dados para dashboards.
 
-- <b>Log de Conexão</b> Registra logs no banco de dados e os envia para dashboards conectados via WebSocket (porta 3002).
+- <b>Log de Conexão</b> Registra logs no banco de dados e os envia para dashboards conectados via WebSocket (porta 3003).
 
 - <b>Alertas em Tempo Real:</b> Avalia mensagens de log, as prioriza e envia alertas (potencialmente por e-mail com base na prioridade), transmitindo logs para dashboards conectados.
 
@@ -56,7 +56,7 @@ npm start
 ```
 
 ## Registro de Logs
-Para registrar mensagens, conecte-se ao servidor WebSocket em execução na porta 3001. O Logger armazenará e processará os logs com base em seu conteúdo e prioridade.
+Para registrar mensagens, conecte-se ao servidor WebSocket em execução na porta 3002. O Logger armazenará e processará os logs com base em seu conteúdo e prioridade.
 
 ## Contribuições
 Sinta-se à vontade para contribuir abrindo problemas ou enviando solicitações de pull.

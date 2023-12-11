@@ -80,7 +80,7 @@ class WebSocketLoggerServer {
   }
 
   public start() {
-    const PORT = process.env.LOGGER_PORT || 3001;
+    const PORT = process.env.LOGGER_PORT || 3002;
     this.server.listen(PORT, () => {
       console.log(`WebSocket Logger Server Listening at port ${PORT}`);
     });

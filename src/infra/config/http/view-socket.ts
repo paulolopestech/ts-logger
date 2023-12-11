@@ -50,7 +50,7 @@ class WebSocketViewServer {
   }
 
   public start() {
-    const PORT = process.env.VIEW_PORT || 3002;
+    const PORT = process.env.VIEW_PORT || 3003;
     this.server.listen(PORT, () => {
       console.log(`Servidor WebSocket View está ouvindo na porta ${PORT}`);
     });

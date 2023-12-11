@@ -5,13 +5,13 @@ A powerful logging application written in Typescript that efficiently manages lo
 
 
 ## Features
-- <b>WebSocket Integration:</b> Two WebSocket servers, one on port 3001 to receive logs and another on port 3002 to send data to dashboards.
+- <b>WebSocket Integration:</b> Two WebSocket servers, one on port 3002 to receive logs and another on port 3003 to send data to dashboards.
 
 - <b>MongoDB Database:</b> Stores log documents efficiently for later analysis and retrieval.
 
-- <b>Express HTTP Server:</b> Runs on port 3000, handling routes to receive and return data for dashboards.
+- <b>Express HTTP Server:</b> Runs on port 3001, handling routes to receive and return data for dashboards.
 
-- <b>Log Connection Handling:</b> Records logs in the database and sends them to connected dashboards via WebSocket (port 3002).
+- <b>Log Connection Handling:</b> Records logs in the database and sends them to connected dashboards via WebSocket (port 3003).
 
 - <b>Real-time Alerting:</b> Evaluates log messages, prioritizes them, and sends alerts (potentially via email based on priority) while broadcasting logs to connected dashboards.
 
@@ -59,7 +59,7 @@ npm start
 ```
 
 ## Logging
-To log messages, connect to the WebSocket server running on port 3001. Logger will store and process the logs based on their content and priority.
+To log messages, connect to the WebSocket server running on port 3002. Logger will store and process the logs based on their content and priority.
 
 ## Contributing
 Feel free to contribute by opening issues or submitting pull requests.
