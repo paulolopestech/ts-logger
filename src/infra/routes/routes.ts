@@ -12,7 +12,7 @@ router.get('/get-logs', async (req: Request, res: Response) => {
     const service = new LoggerService(adapter);
     const controller = new HandleLogger(service);
     const response = await controller.handleGetLogs(filters, page);
-    res.send(response);
+    res.json(response);
 });
 
 

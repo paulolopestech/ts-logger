@@ -10,6 +10,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    networks:
+      - c214
 
 
   mongo-express:
@@ -24,4 +26,4 @@ services:
 
 networks:
   default:
-    name: c115
+    name: c214

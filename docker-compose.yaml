@@ -15,5 +15,5 @@ services:
       - app-network
 
 networks:
-  app-network:
-    driver: bridge
+  c214:
+    name: c214
