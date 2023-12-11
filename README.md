@@ -42,7 +42,7 @@ Ensure MongoDB is running.
 Configure MongoDB connection settings in src/infra/config/database/database.ts.
 ### Set up AWS SES:
 
-Configure SES credentials and settings in src/infra/config/mailer.ts. <b> ❌ Not Implemented </b>
+Configure SES credentials and settings in src/infra/config/mailer.ts.
 
 ## Usage
 ### Development
