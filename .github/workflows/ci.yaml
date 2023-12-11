@@ -24,6 +24,13 @@ jobs:
     - name: Run tests
       run: npm test
 
+    - name: Archive Robot Framework Tests Report
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v1
+      with:
+        name: tests-reports
+        path: ./coverage
+
   build:
     runs-on: ubuntu-latest
 

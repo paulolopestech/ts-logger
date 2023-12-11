@@ -6,7 +6,7 @@
     "scripts": {
         "start": "npm run build && node build/src/server.js",
         "start:dev": "npx nodemon",
-        "test": "jest",
+        "test": "jest --collect-coverage",
         "compile": "npx tsc",
         "build": "rimraf ./build && tsc"
     },
