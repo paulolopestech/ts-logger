@@ -1,5 +1,7 @@
 # Logger
-Uma aplicação de registro eficiente escrita em Typescript que gerencia logs de várias aplicações conectadas. O Logger utiliza conexões WebSocket para receber logs, armazená-los em um banco de dados MongoDB e transmitir as informações para dashboards.
+Uma aplicação de logs escrita em Typescript que gerencia logs de várias aplicações conectadas. O Logger utiliza conexões WebSocket para receber logs, armazená-los em um banco de dados MongoDB e transmitir as informações para dashboards.
+
+[Frontend](https://github.com/paulolopestech/logger-ts-frontend)
 
 ## Funcionalidades
 - <b>Integração WebSocket:</b> Dois servidores WebSocket, um na porta 3002 para receber logs e outro na porta 3003 para enviar dados para dashboards.
