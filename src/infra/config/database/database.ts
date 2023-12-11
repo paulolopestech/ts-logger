@@ -1,7 +1,9 @@
+import 'dotenv/config'
 import { UUID } from 'crypto';
 import mongoose, { Schema, model, Document } from 'mongoose';
 
-mongoose.connect('mongodb://root:example@localhost:27017/admin')
+const mongoHost = process.env.MONGO ? process.env.MONGO : 'localhost'
+mongoose.connect(`mongodb://root:example@${mongoHost}:27017/admin`)
   .then(() => console.log('Conectado ao Banco de Dados!'))
   .catch(error => {
     console.log('ERRO:::', error)

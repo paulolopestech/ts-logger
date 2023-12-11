@@ -11,9 +11,8 @@ services:
       - "3003:3003"
     environment:
       NODE_ENV: production
-    networks:
-      - app-network
+      MONGO: infra_mongo_1
 
 networks:
-  c214:
+  default:
     name: c214
