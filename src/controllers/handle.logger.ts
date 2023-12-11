@@ -25,10 +25,9 @@ export class HandleLogger {
         return [response, error];
     }
 
-    async handleGetLogs(filter: string, page?: string) {
-        const parsedFilter: LogsFilter = filter ? JSON.parse(filter) : {};
+    async handleGetLogs(filter: LogsFilter, page?: string) {
         const parsedPage = page ? parseInt(page) : 0;
-        const [response, error] = await this.logger.getLogs(parsedFilter, parsedPage);
+        const [response, error] = await this.logger.getLogs(filter, parsedPage);
         if(error) {
             return error;
         }

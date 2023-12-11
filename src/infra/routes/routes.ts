@@ -6,12 +6,11 @@ import { LoggerAdapter } from '../config/database';
 const router = Router();
 
 router.get('/get-logs', async (req: Request, res: Response) => {
-    const filters: any = req.query.filters;
-    const page: any = req.query?.page;
+    const filters: any = req.query;
     const adapter = new LoggerAdapter();
     const service = new LoggerService(adapter);
     const controller = new HandleLogger(service);
-    const response = await controller.handleGetLogs(filters, page);
+    const response = await controller.handleGetLogs(filters);
     res.json(response);
 });
 
