@@ -2,6 +2,7 @@ import { WebSocketViewServer } from "../infra/config/http";
 import { LoggerService } from "../services";
 import { Log, LogsFilter, WsLogInput } from "../types";
 import { handleLogPriority } from "../utils/handleLogPriority";
+import { sendEmail } from "../utils/mailer";
 
 export class HandleLogger {
     logger: LoggerService
@@ -11,6 +12,9 @@ export class HandleLogger {
     async handleLoggerMessage(input: WsLogInput) {
         const timestamp = new Date().getTime();
         const logPriority = handleLogPriority(input.type);
+        if(logPriority === 0) {
+            sendEmail(input.applicationID, input.message, new Date(timestamp).toLocaleString());
+        }
         const log: Log = {
             connectionID: input.connectionID,
             applicationID: input.applicationID,

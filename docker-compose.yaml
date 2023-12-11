@@ -12,6 +12,8 @@ services:
     environment:
       NODE_ENV: production
       MONGO: infra_mongo_1
+    restart:
+      - always
 
 networks:
   default:
