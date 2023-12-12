@@ -1,7 +1,11 @@
 # Logger
 A logging application written in Typescript that manages logs from various connected applications. Logger utilizes WebSocket connections to receive logs, store them in a MongoDB database, and broadcast the information to dashboards
 
+
 [![CI](https://github.com/paulolopestech/logger/actions/workflows/ci.yaml/badge.svg)](https://github.com/paulolopestech/logger/actions/workflows/ci.yaml)
+
+## Video - Presentation
+[![Apresentação](https://img.youtube.com/vi/9YteyxlCRbM/0.jpg)](https://youtu.be/9YteyxlCRbM)
 
 [Frontend](https://github.com/paulolopestech/logger-ts-frontend)
 
