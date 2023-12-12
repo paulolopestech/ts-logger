@@ -1,4 +1,4 @@
-# Logger
+# TS-Logger
 A logging application written in Typescript that manages logs from various connected applications. Logger utilizes WebSocket connections to receive logs, store them in a MongoDB database, and broadcast the information to dashboards
 
 
